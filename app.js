@@ -4,10 +4,11 @@ const path = require("path");
 const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 app.use(express.json());
-const dbPath = path.join(__dirname, "covid19india.db");
+const dbPath = path.join(__dirname, "covid19India.db");
 let db = null;
 
 const objectSnakeToCamel = (newObject) => {
+  s;
   return {
     stateId: newObject.state_id,
     stateName: newObject.state_name,
@@ -43,10 +44,10 @@ const initializeDBAndServer = async () => {
       driver: sqlite3.Database,
     });
     app.listen(3000, () => {
-      console.log(`Server Is Running`);
+      console.log("Server Running at http://localhost:3000");
     });
   } catch (e) {
-    console.log(`error ${e.message}`);
+    console.log(`DB Error: ${e.message}`);
     process.exit(1);
   }
 };
@@ -57,8 +58,8 @@ app.get("/states/", async (request, response) => {
     SELECT *
     FROM state
     ORDER BY state_id;`;
-  const stateList = await db.all(allStatesList);
-  const statesResult = stateList.map((eachObject) => {
+  const statesList = await db.all(allStatesList);
+  const statesResult = statesList.map((eachObject) => {
     return objectSnakeToCamel(eachObject);
   });
   response.send(statesResult);
@@ -158,6 +159,7 @@ app.get("/states/:stateId/stats/", async (request, response) => {
         WHERE state_id = ${stateId};`;
   const stateReport = await db.get(getStateReport);
   const resultReport = reportSnakeToCamelCase(stateReport);
+  response.send(resultReport);
 });
 
 app.get("/districts/:districtId/details/", async (request, response) => {
