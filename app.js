@@ -144,7 +144,7 @@ app.put("/districts/:districtId/", async (request, response) => {
             active = ${active},
             deaths = ${deaths}
         WHERE district_id = ${districtId};`;
-  await db.run(updateDistrict);
+  await db.run(updateDistricts);
   response.send("District Details Updated");
 });
 
