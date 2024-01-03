@@ -8,7 +8,6 @@ const dbPath = path.join(__dirname, "covid19India.db");
 let db = null;
 
 const objectSnakeToCamel = (newObject) => {
-  s;
   return {
     stateId: newObject.state_id,
     stateName: newObject.state_name,
@@ -104,9 +103,12 @@ app.post("/districts/", async (request, response) => {
 app.get("/districts/:districtId/", async (request, response) => {
   const { districtId } = request.params;
   const getDistrict = `
-    SELECT *
-    FROM district
-    WHERE district_id = ${districtId};`;
+    SELECT
+     *
+    FROM
+     district
+    WHERE
+     district_id = ${districtId};`;
   const newDistrict = await db.get(getDistrict);
   const districtResult = districtSnakeToCamel(newDistrict);
   response.send(districtResult);
